@@ -4,13 +4,21 @@ import { Link } from "react-router-dom";
 import logo from "../../assets/logo_chat.png";
 import Icon from "../../assets/conversation.png";
 
+let user;
+
 const Join = () => {
   const [name, setName] = useState();
+
+  const sendUser = () => {
+    user = document.getElementById("joinInput").value;
+    document.getElementById("joinInput").value = "";
+  };
+
   return (
     <div className="JoinPage">
       <div className="JoinContainer">
         <img src={Icon} alt="logo" />
-        <h1>WECHAT-</h1>
+        <h1>WE~CHAT</h1>
         <input
           onChange={(e) => setName(e.target.value)}
           placeholder="Enter Your Name"
@@ -18,11 +26,13 @@ const Join = () => {
           id="joinInput"
         />
         <Link
-          onClick={(event) => (!name ? event.preventDefault() : null)}
           to="/chat"
+          onClick={(event) => (!name ? event.preventDefault() : null)}
         >
           {" "}
-          <button className="joinbtn">Login In</button>
+          <button className="joinbtn" onClick={sendUser}>
+            Login In
+          </button>
         </Link>
       </div>
     </div>
@@ -30,3 +40,5 @@ const Join = () => {
 };
 
 export default Join;
+
+export { user };
