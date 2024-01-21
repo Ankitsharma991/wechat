@@ -84,7 +84,7 @@ const Chat = () => {
         </ReactScrollToBottom>
         <div className="inputBox">
           <input
-            onKeyPress={(event) => (event.key === "Enter" ? send() : null)}
+            onKeyDown={(event) => (event.key === "Enter" ? send() : null)}
             type="text"
             id="chatInput"
           />
