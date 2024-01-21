@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Join from "./component/Join/Join.js";
 import "./App.css";
 import Chat from "./component/chat/Chat.js";
-import "react-toastify/dist/ReactToastify.css";
+
 
 function App() {
   return (

@@ -9,7 +9,7 @@ import { IoSend } from "react-icons/io5";
 
 let socket;
 
-const ENDPOINT = "http://localhost:5000/";
+const ENDPOINT = "https://wechat-2ghw.onrender.com/";
 
 const Chat = () => {
   const [id, setid] = useState("");
@@ -29,7 +29,6 @@ const Chat = () => {
       alert("Connected");
       setid(socket.id);
     });
-    console.log(socket);
     socket.emit("joined", { user });
 
     socket.on("welcome", (data) => {
