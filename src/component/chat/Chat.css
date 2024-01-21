@@ -27,12 +27,12 @@
   margin: 2.5vmax;
 }
 
-.header img {
+.header .img {
   margin: 2.5vmax;
   transition: all 0.3s;
   cursor: pointer;
 }
-.header > img:hover {
+.header > .img:hover {
   transform: scale(1.2);
 }
 
@@ -68,15 +68,14 @@
   cursor: pointer;
 }
 
-.sendBtn > .sImg {
+.sendBtn > img {
   width: 2.6vmax;
   filter: brightness(100) invert();
   transition: all 0.3s;
 }
-
 .sendBtn:hover {
   background-color: rgb(156, 13, 42);
 }
-.sendBtn:hover .s2Img {
+.sendBtn:hover img {
   transform: translateX(10px);
 }

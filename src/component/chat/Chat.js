@@ -1,41 +1,50 @@
 import React, { useEffect, useState } from "react";
+import { user } from "../Join/Join";
+import socketIo from "socket.io-client";
 import "./Chat.css";
+import Message from "../message/Message";
+import { MdClose } from "react-icons/md";
 import ReactScrollToBottom from "react-scroll-to-bottom";
-import { user } from "../join/Join";
-import { AiOutlineClose } from "react-icons/ai";
-import { LuSendHorizonal } from "react-icons/lu";
-import socketIO from "socket.io-client";
-import { toast } from "react-toastify";
+import { IoSend } from "react-icons/io5";
+
+let socket;
 
 const ENDPOINT = "http://localhost:5000/";
-let socket;
+
 const Chat = () => {
-  const [id, setId] = useState("");
+  const [id, setid] = useState("");
+  const [messages, setMessages] = useState([]);
+
   const send = () => {
     const message = document.getElementById("chatInput").value;
     socket.emit("message", { message, id });
     document.getElementById("chatInput").value = "";
   };
+
+  console.log(messages);
   useEffect(() => {
-    socket = socketIO(ENDPOINT, { transports: ["websocket"] });
+    socket = socketIo(ENDPOINT, { transports: ["websocket"] });
 
     socket.on("connect", () => {
-        setId(socket.id);
-        toast.warn("connected!!");
+      alert("Connected");
+      setid(socket.id);
     });
-
+    console.log(socket);
     socket.emit("joined", { user });
+
     socket.on("welcome", (data) => {
-      toast.success(data.message);
+      setMessages([...messages, data]);
+      console.log(data.user, data.message);
     });
 
     socket.on("userJoined", (data) => {
-      toast.info(data.message);
-      console.log(data.message);
+      setMessages([...messages, data]);
+      console.log(data.user, data.message);
     });
 
     socket.on("leave", (data) => {
-      toast.warn(data.message);
+      setMessages([...messages, data]);
+      console.log(data.user, data.message);
     });
 
     return () => {
@@ -46,26 +55,41 @@ const Chat = () => {
 
   useEffect(() => {
     socket.on("sendMessage", (data) => {
+      setMessages([...messages, data]);
       console.log(data.user, data.message, data.id);
-      //   toast.success(data.user, "\n", data.message, "\n", data.id);
     });
-  }, []);
+    return () => {
+      socket.off();
+    };
+  }, [messages]);
 
   return (
     <div className="chatPage">
       <div className="chatContainer">
         <div className="header">
-          <h2>WE-CHAT</h2>
+          <h2>WE CHAT</h2>
           <a href="/">
             {" "}
-            <AiOutlineClose className="sImg" size={35} color="white" />
+            <MdClose color="white" size={25} className="img" />
           </a>
         </div>
-        <ReactScrollToBottom className="chatBox"></ReactScrollToBottom>
+        <ReactScrollToBottom className="chatBox">
+          {messages.map((item, i) => (
+            <Message
+              user={item.id === id ? "" : item.user}
+              message={item.message}
+              classs={item.id === id ? "right" : "left"}
+            />
+          ))}
+        </ReactScrollToBottom>
         <div className="inputBox">
-          <input type="text" id="chatInput" />
-          <button className="sendBtn" onClick={send}>
-            <LuSendHorizonal size={35} color="white" className="s2Img" />
+          <input
+            onKeyPress={(event) => (event.key === "Enter" ? send() : null)}
+            type="text"
+            id="chatInput"
+          />
+          <button onClick={send} className="sendBtn">
+            <IoSend color="white" size={25} />
           </button>
         </div>
       </div>

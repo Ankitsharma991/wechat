@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import "./join.css";
 import { Link } from "react-router-dom";
-import logo from "../../assets/logo_chat.png";
 import Icon from "../../assets/conversation.png";
 
 let user;
